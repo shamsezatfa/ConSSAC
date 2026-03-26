@@ -15,7 +15,7 @@ import random
 #from convlab.policy.ppo import PPO
 from convlab.policy.cql.ConSSAC import ConSSAC
 #from convlab.policy.ppo.multiwoz.ppo_policy import PPOPolicy
-from convlab.policy.rlmodule import Memory
+from convlab.policy.rlmodule_ConSSAC import Memory
 from torch import multiprocessing as mp
 from argparse import ArgumentParser
 from convlab.util.custom_util import set_seed, init_logging, save_config, move_finished_training, env_config, \
