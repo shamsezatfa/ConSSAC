@@ -13,7 +13,7 @@ import torch
 import random
 
 #from convlab.policy.ppo import PPO
-from convlab.policy.cql.CQL import CQL
+from convlab.policy.cql.ConSSAC import ConSSAC
 #from convlab.policy.ppo.multiwoz.ppo_policy import PPOPolicy
 from convlab.policy.rlmodule import Memory
 from torch import multiprocessing as mp
