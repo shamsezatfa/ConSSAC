@@ -324,7 +324,6 @@ class CQL(Policy):
 
         with torch.no_grad():
             next_state_action = self.batch_select_action(next_state_batch,next_action_mask)                     
-
             next_state_log_pi, action_probabilities = self.actor.get_log_prob(next_state_batch,next_state_action,next_action_mask)
             qf1_next_target = self.critic_target.forward(next_state_batch.float())
             qf2_next_target = self.critic_target_2.forward(next_state_batch.float())
@@ -336,16 +335,19 @@ class CQL(Policy):
         
         q1 = self.critic_local.forward(state_batch)
         q2 = self.critic_local_2.forward(state_batch)
-        q1_ = q1.gather(1, action_batch.long()).sum(dim=1)
-        q2_ = q2.gather(1, action_batch.long()).sum(dim=1)
-        
-        qf1 = self.critic_local.forward(state_batch).sum(dim=1)
-        qf2 = self.critic_local_2.forward(state_batch).sum(dim=1)
-        qf1_loss =  F.mse_loss(q1_, next_q_value.detach())
-        qf2_loss =  F.mse_loss(q2_, next_q_value.detach())
 
-        cql1_scaled_loss = torch.logsumexp(qf1, dim=-1).mean() - q1_.mean()
-        cql2_scaled_loss = torch.logsumexp(qf2, dim=-1).mean() - q2_.mean()
+        q1_ = q1.gather(1, action_batch.long()).squeeze(1)
+        q2_ = q2.gather(1, action_batch.long()).squeeze(1)
+		
+        q1__ = q1.gather(1, action_batch.long()).sum(dim=1)
+        q2__ = q2.gather(1, action_batch.long()).sum(dim=1)
+        
+
+        qf1_loss =  F.mse_loss(q1__, next_q_value.detach())
+        qf2_loss =  F.mse_loss(q2__, next_q_value.detach())
+
+        cql1_scaled_loss = torch.logsumexp(q1, dim=1).mean() - q1_.mean()
+        cql2_scaled_loss = torch.logsumexp(q2, dim=1).mean() - q2_.mean()
 
         cql_alpha = self.cql_log_alpha.exp()
         cql1_alpha_loss = cql_alpha*( cql1_scaled_loss)
