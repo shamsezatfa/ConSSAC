@@ -18,7 +18,7 @@ sys.path.append(root_dir)
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-class CQL(Policy):
+class ConSSAC(Policy):
 
     def __init__(self, is_train=False, dataset='Multiwoz', seed=0, vectorizer=None, load_path="", **kwargs):
 
