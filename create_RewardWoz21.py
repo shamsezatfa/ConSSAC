@@ -10,7 +10,7 @@ import json
 import pickle
 from torch import multiprocessing as mp
 from convlab.policy.cql.CQL import CQL
-from convlab.policy.rlmodule import Memory
+from convlab.policy.rlmodule_RewardWoz21 import Memory
 from convlab.util.custom_util import set_seed, init_logging, save_config, move_finished_training, env_config, \
     eval_policy, log_start_args, save_best, load_config_file, get_config, flatten_acts
 import pickle
